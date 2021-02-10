@@ -18,5 +18,5 @@ output:
 #### Week 1: **Nothing Due**
 
 #### Week 2: [link text: Homework 2](Homework_02.html)
-Submit Github page and Bio 381 webpage url links- see Slack channel
+
 
