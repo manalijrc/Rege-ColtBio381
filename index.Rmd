@@ -1,5 +1,5 @@
 ---
-title: " Bio 381 Homepage"
+title: "Computational Biology: Bio 381 Homepage"
 author: "Manali Rege-Colt"
 date: "Spring 2021"
 output: 
