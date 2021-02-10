@@ -11,11 +11,11 @@ output:
 
 ## This is my Bio 381 Homepage
 
-<img src="IMG_0690.jpg" width = "200" height ="200" />
+<img src="IMG_0690.jpg" width = "250" height ="200" />
 
 #### Homework Assignments
 
 #### Week 1: **Nothing Due**
 
-#### Week 2: [link text: Homework 2](Homework-2.html)
+#### Week 2: [link text: Homework 2](HW2.html)
 
