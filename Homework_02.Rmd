@@ -1,0 +1,11 @@
+---
+title: "Homework 2"
+author: "Manali Rege-Colt"
+date: "2/10/2021"
+output: 
+  prettydoc::html_pretty:
+    theme: cayman
+    highlight: github
+---
+This is the page that I created and linked to my main homepage as part of Homework 2. 
+In addition to creating this assignment page, I also sent the links to my Github account page and my Biol 381 homepage in the Slack general channel.
