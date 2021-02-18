@@ -8,10 +8,18 @@ output:
     highlight: github
 ---
 
+<img src="IMG_0690.jpg" width = "250" height ="200" /> 
 
-## This is my Bio 381 Homepage
+**Manali Rege-Colt**
 
-<img src="IMG_0690.jpg" width = "250" height ="200" />
+Master's in Biology, UVM 2022
+
+B.A. in Zoology with a minor in Environtmental Studies, UVM 2021
+
+Contact: mregecol@uvm.edu
+
+
+This my home base for BIOL 381, Computational Biology. All projects are posted below. 
 
 #### Homework Assignments
 
