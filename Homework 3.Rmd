@@ -5,3 +5,165 @@ date: "2/17/2021"
 output: html_document
 ---
 
+# Regular Expression Puzzles
+
+### Puzzle 1
+
+Get from this:
+
+```
+First String    Second      1.22      3.4
+Second          More Text   1.555555  2.2220
+Third           x           3         124
+```
+
+To this:
+
+```
+First String,Second,1.22,3.4
+Second,More Text,1.555555,2.2220
+Third,x,3,124
+```
+Solution: find `\s{2,}` and replace with a comma. 
+
+In this solution, `\s` is referencing a single blank space. In order to find only the places where there are 2 or more blank spaces you must add the phrase `{2,}`.
+
+### Puzzle 2
+
+Get from this:
+
+```
+Ballif, Bryan, University of Vermont
+Ellison, Aaron, Harvard Forest
+Record, Sydne, Bryn Mawr
+```
+
+To this:
+
+```
+Bryan Ballif (University of Vermont)
+Aaron Ellison (Harvard Forest)
+Sydne Record (Bryn Mawr)
+```
+Solution: find `(\w+), (\w+), (.+)` and replace with `\2 \1 (\3)`. 
+
+In this solution the trick is to capture each word/name so that you can reference each of them individually and move them around. Here I used `(\w+)` to capture each name. The `\w+` references 1 or more consecutive letters (whereas a `\w` would only reference a single letter) and the parentheses creates the capture so that you are able to reference that specific word in consecutive order. The `.+` (could also be `.*`) simply refers to the rest of the characters/words in that line. In the replace box you are then able to say which order you would like each name/word and add parentheses to the university name.
+
+### Puzzle 3
+
+Get from this:
+
+```
+0001 Georgia Horseshoe.mp3 0002 Billy In The Lowground.mp3 0003 Cherokee Shuffle.mp3 0004 Walking Cane.mp3
+```
+
+To this:
+
+```
+0001 Georgia Horseshoe.mp3
+0002 Billy In The Lowground.mp3
+0003 Cherokee Shuffle.mp3
+0004 Walking Cane.mp3
+```
+
+Solution: Find `(\w{4}\s\w+\s\w+\s*\w*\.mp3)(\s*)` and replace with `\1\n`.
+
+To solve this puzzle you must first select the individual .mp3 files. Then, you use the replacement expression `\1\n` where `\1` refers to the .mp3 file and `n` creates a line break. 
+
+### Puzzle 4
+
+Get from this:
+
+```
+0001 Georgia Horseshoe.mp3
+0002 Billy In The Lowground.mp3
+0003 Cherokee Shuffle.mp3
+0004 Walking Cane.mp3
+```
+
+To this:
+
+```
+Georgia Horseshoe_0001.mp3
+Billy In The Lowground_0002.mp3
+Cherokee Shuffle_0003.mp3
+Walking Cane_0004.mp3
+```
+
+Solution: Find `(\d{4})\s(\w+\s\w+\s*\w*\s*\w*)(\.mp3)` and replace with `\2_\1\3`. 
+In this solution I broke up each mp3 file into its number which was capture 1, its name which was capture 2 and the .mp3 which was capture 3. I was then able to order them in the desired order including an underscore for the final solution. I had to switch to using the asterisk quantifier in order to capture the file name of the second song that is more than 2 words and includes short words such as 'the' and 'in'. 
+
+### Puzzle 5
+
+Get from this:
+
+```
+Camponotus,pennsylvanicus,10.2,44
+Camponotus,herculeanus,10.5,3
+Myrmica,punctiventris,12.2,4
+Lasius,neoniger,3.3,55
+```
+
+To this:
+
+```
+C_pennsylvanicus,44
+C_herculeanus,3
+M_punctiventris,4
+L_neoniger,55
+```
+
+Solution: Find `(\w)\w+\,(\w+)\,\d+\.\d+\,(\d+)` and replace with `\1_\2,\3`.
+
+In this puzzle I first captured the sections that I needed to move around which were the first letters of each of the first words, the second words and the last numbers in each line. I was then able to refer to each capture to put them in the desired order. 
+
+### Puzzle 6
+
+Get from this:
+
+```
+Camponotus,pennsylvanicus,10.2,44
+Camponotus,herculeanus,10.5,3
+Myrmica,punctiventris,12.2,4
+Lasius,neoniger,3.3,55
+```
+
+To this:
+
+```
+C_penn,44
+C_herc,3
+M_punc,4
+L_neon,55
+```
+
+Solution: Find `(\w)\w+\,(\w{4})\w+\,\d+\.\d+(\,\d+)` and replace with `\1_\2\3`. 
+
+With this puzzle I first isolated the first letter of the first words, the first 4 letters of the second word and the last comma and number into individual captures and then arranged them with an underscore between capture 1 and 2. In this way I was able to get rid of the unwanted information. 
+
+### Puzzle 7
+
+Get from this:
+
+```
+Camponotus,pennsylvanicus,10.2,44
+Camponotus,herculeanus,10.5,3
+Myrmica,punctiventris,12.2,4
+Lasius,neoniger,3.3,55
+```
+
+To this:
+
+```
+Campen, 44, 10.2
+Camher, 3, 10.5
+Myrpun, 4, 12.2
+Lasneo, 55, 3.3
+```
+
+
+Solution: Find `(\w{3})\w+\,(\w{3})\w+\,(\d+\.\d+)\,(\d+)` and replace with `\1\2, \4, \3`. 
+
+The trick with this puzzle was to (as done in previous puzzles) isolate the necessary components. First I had to isolate the first 3 letters of the first 2 words using the letter quantifier and then I had to capture the numbers. With these captures I was able to combine the names and switch the order of the numbers with the correct punctuation and spacing. 
+
+
