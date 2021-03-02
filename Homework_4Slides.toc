@@ -1,0 +1,7 @@
+\beamer@sectionintoc {1}{Humpback Whale Communication}{3}{0}{1}
+\beamer@subsectionintoc {1}{1}{Song Characterisitcs }{3}{0}{1}
+\beamer@subsectionintoc {1}{2}{Song Structure}{3}{0}{1}
+\beamer@sectionintoc {2}{Automated Song Analysis}{9}{0}{2}
+\beamer@subsectionintoc {2}{1}{Spectrogram Cross Correlation (SPCC)}{9}{0}{2}
+\beamer@sectionintoc {3}{Importance}{10}{0}{3}
+\beamer@subsectionintoc {3}{1}{Application of SPCC}{10}{0}{3}

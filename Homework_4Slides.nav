@@ -1,0 +1,38 @@
+\headcommand {\slideentry {0}{0}{1}{1/1}{}{0}}
+\headcommand {\beamer@framepages {1}{1}}
+\headcommand {\slideentry {0}{0}{2}{2/2}{}{0}}
+\headcommand {\beamer@framepages {2}{2}}
+\headcommand {\beamer@sectionpages {1}{2}}
+\headcommand {\beamer@subsectionpages {1}{2}}
+\headcommand {\sectionentry {1}{Humpback Whale Communication}{3}{Humpback Whale Communication}{0}}
+\headcommand {\beamer@subsectionpages {3}{2}}
+\headcommand {\beamer@subsectionentry {0}{1}{1}{3}{Song Characterisitcs }}
+\headcommand {\beamer@subsectionpages {3}{2}}
+\headcommand {\beamer@subsectionentry {0}{1}{2}{3}{Song Structure}}
+\headcommand {\slideentry {1}{2}{1}{3/3}{Song Structure}{0}}
+\headcommand {\beamer@framepages {3}{3}}
+\headcommand {\slideentry {1}{2}{2}{4/7}{Song Structure}{0}}
+\headcommand {\beamer@framepages {4}{7}}
+\headcommand {\slideentry {1}{2}{3}{8/8}{Song Structure}{0}}
+\headcommand {\beamer@framepages {8}{8}}
+\headcommand {\beamer@sectionpages {3}{8}}
+\headcommand {\beamer@subsectionpages {3}{8}}
+\headcommand {\sectionentry {2}{Automated Song Analysis}{9}{Automated Song Analysis}{0}}
+\headcommand {\beamer@subsectionpages {9}{8}}
+\headcommand {\beamer@subsectionentry {0}{2}{1}{9}{Spectrogram Cross Correlation (SPCC)}}
+\headcommand {\slideentry {2}{1}{1}{9/9}{Spectrogram Cross Correlation (SPCC)}{0}}
+\headcommand {\beamer@framepages {9}{9}}
+\headcommand {\beamer@sectionpages {9}{9}}
+\headcommand {\beamer@subsectionpages {9}{9}}
+\headcommand {\sectionentry {3}{Importance}{10}{Importance}{0}}
+\headcommand {\beamer@subsectionpages {10}{9}}
+\headcommand {\beamer@subsectionentry {0}{3}{1}{10}{Application of SPCC}}
+\headcommand {\slideentry {3}{1}{1}{10/13}{Application of SPCC}{0}}
+\headcommand {\beamer@framepages {10}{13}}
+\headcommand {\slideentry {3}{1}{2}{14/14}{Application of SPCC}{0}}
+\headcommand {\beamer@framepages {14}{14}}
+\headcommand {\beamer@partpages {1}{14}}
+\headcommand {\beamer@subsectionpages {10}{14}}
+\headcommand {\beamer@sectionpages {10}{14}}
+\headcommand {\beamer@documentpages {14}}
+\headcommand {\gdef \inserttotalframenumber {8}}

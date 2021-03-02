@@ -1,0 +1,70 @@
+\documentclass[10pt]{article} % change font size here
+
+%--------------------------------------
+\usepackage{hyphenat} % use to disable hyphenation
+\usepackage[margin=1.0in,top=0.25in]{geometry} % adjust margins
+\usepackage{lipsum} % Just for this example
+
+%--------------------------------------
+% \renewcommand{\familydefault}{\ttdefault} % use for plain text
+\setlength{\parindent}{0pt} % No paragraph indent
+\pagestyle{empty} % No page headers/footers
+\setlength{\parskip}{5mm plus 4mm minus 3mm} % for paragraph spacing
+%--------------------------------------
+\begin{document}
+\raggedright % toggle off for flush right margin
+\includegraphics[scale=2]{UVMLogoSolid7484.jpg}\\ % delete to remove UVM letterhead
+
+%--------------------------------------
+ \hfill\hfill\hfill % to align following text flush right
+ 2 March 2021\\[10pt]  % <-- ADD DATE HERE
+ 
+%--------------------------------------
+\begin{tabular}{l@{}}
+  % Manali J. Rege-Colt \\ 
+  % 31 North Winooski Ave \\
+  % Burlington, Vermont 05401 \\
+  % Email: mregecol@uvm.edu
+\end{tabular}
+
+%--------------------------------------
+\begin{tabular}{@{}l}
+  % date time stamp % use these entries for left flush
+  % \bigskip
+Recipient Name\\
+Address 1\\
+Address 2\\
+Address 3
+\end{tabular}
+%--------------------------------------
+%--------------------------------------
+
+
+Dear X:
+
+\lipsum[1-2]
+
+
+
+% \newpage % use if necessary to adjust spacing for signature block
+
+%--------------------------------------
+%--------------------------------------
+
+\begin{tabular}{@{}l}
+Sincerely yours,\\
+\includegraphics[scale=0.15,width=2in]{MySignature.jpg}\\
+Manali J. Rege-Colt\\
+Department of Biology\\
+University of Vermont\\
+Burlington, VT 05405 USA\\
+
+mregecol@uvm.edu\\
+https://manalijrc.github.io/Rege-ColtBio381/\\
+
+\end{tabular}
+%--------------------------------------
+
+\end{document}
+
+

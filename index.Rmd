@@ -30,5 +30,9 @@ This my home base for BIOL 381, Computational Biology. All projects are posted b
 #### Week 3: [ Homework 3](Homework-_3.html)
 
 #### Week 4: [Homework 4 - Typora](Homework_4.html)
+             
+[Homework 4 - Letter](Homework_4Letter.pdf) 
+
+[Homework 4- Slides](Homework_4Slides.pdf)
 
 
