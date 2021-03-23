@@ -1,0 +1,131 @@
+---
+title: "Homework 7"
+author: "Manali Rege-Colt"
+date: "3/18/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(ggplot2) # for graphics
+library(MASS) # for maximum likelihood estimation
+```
+## Real Data
+
+```{r}
+z <- read.table("MyDataFile.csv",header=TRUE,sep=",", stringsAsFactors=FALSE) # 218 obs, 13 variables
+str(z) # data frame 
+summary(z)
+
+
+
+# Plot the data on a histogram
+p1 <- ggplot(data=z, aes(x=DiveTime, y=..density..)) +
+  geom_histogram(color="grey60",fill="cornsilk",size=0.2) 
+print(p1)
+
+
+# add an empirical density curve (smooth out the histogram)
+p1 <-  p1 +  geom_density(linetype="dotted",size=0.75)
+print(p1)
+
+# fit normal distribution and get maximum likelihood parameters for a normal distribution
+normPars <- fitdistr(z$DiveTime,"normal")
+print(normPars)
+str(normPars)
+
+normPars$estimate["mean"] # note structure of getting a named attribute
+
+
+
+# plot the probability density (best fit) of the normal distribution
+# first step: get ML parameters for normal
+# then feed into stat
+meanML <- normPars$estimate["mean"]
+sdML <- normPars$estimate["sd"]
+
+xval <- seq(0,max(z$DiveTime),len=length(z$DiveTime))
+
+ stat <- stat_function(aes(x = xval, y = ..y..), fun = dnorm, colour="red", n = length(z$DiveTime), args = list(mean = meanML, sd = sdML))
+ p1 + stat
+
+# plot the exponential probability density
+expoPars <- fitdistr(z$DiveTime,"exponential")
+rateML <- expoPars$estimate["rate"]
+
+stat2 <- stat_function(aes(x = xval, y = ..y..), fun = dexp, colour="blue", n = length(z$DiveTime), args = list(rate=rateML))
+ p1 + stat + stat2
+
+# plot the uniform probability density
+# ML estimators are min and max of data
+stat3 <- stat_function(aes(x = xval, y = ..y..), fun = dunif, colour="darkgreen", n = length(z$DiveTime), args = list(min=min(z$DiveTime), max=max(z$DiveTime)))
+ p1 + stat + stat2 + stat3
+
+# plot the gamma probability density
+gammaPars <- fitdistr(z$DiveTime,"gamma")
+shapeML <- gammaPars$estimate["shape"]
+rateML <- gammaPars$estimate["rate"]
+
+stat4 <- stat_function(aes(x = xval, y = ..y..), fun = dgamma, colour="brown", n = length(z$DiveTime), args = list(shape=shapeML, rate=rateML))
+ p1 + stat + stat2 + stat3 + stat4
+
+# plot the beta probability density 
+# shown in its own plot because data must be rescaled to be between 0 and 1
+ 
+pSpecial <- ggplot(data=z, aes(x=DiveTime/(max(DiveTime + 0.1)), y=..density..)) +
+  geom_histogram(color="grey60",fill="cornsilk",size=0.2) + 
+  xlim(c(0,1)) +
+  geom_density(size=0.75,linetype="dotted")
+
+betaPars <- fitdistr(x=z$DiveTime/max(z$DiveTime + 0.1),start=list(shape1=1,shape2=2),"beta")
+shape1ML <- betaPars$estimate["shape1"]
+shape2ML <- betaPars$estimate["shape2"]
+
+statSpecial <- stat_function(aes(x = xval, y = ..y..), fun = dbeta, colour="orchid", n = length(z$DiveTime), args = list(shape1=shape1ML,shape2=shape2ML))
+pSpecial + statSpecial
+```
+
+
+## Simulated Data Distribution
+
+#### Based on the histograms generated above, the gamma distribution is the best fit for the data.   
+
+```{r}
+# generate simulated data from the gamma probability density
+# pull ML parameters
+
+print(gammaPars)
+
+sim_gamma <- rgamma(n=length(z$DiveTime),shape=shapeML,scale=1/rateML)
+sim_gamma <- as.data.frame(sim_gamma)
+names(sim_gamma)[names(sim_gamma)== "sim_gamma"] <- "DiveTime"
+summary(sim_gamma$DiveTime)
+
+gammaPars1 <- fitdistr(sim_gamma$DiveTime,"gamma")
+shapeML1 <- gammaPars1$estimate["shape"]
+rateML1 <- gammaPars1$estimate["rate"]
+
+xval1 <- seq(0,max(sim_gamma$DiveTime),len=length(sim_gamma$DiveTime))
+
+p1a <- ggplot(data=sim_gamma, aes(x=DiveTime, y=..density..)) +
+  geom_histogram(color="grey60",fill="cornsilk",size=0.2)
+
+sim_gamma_plot <- stat_function(aes(x = xval1, y = ..y..), fun = dgamma,  colour="brown", n = length(sim_gamma$DiveTime), args = list(shape=shapeML1, rate=rateML1))
+
+print(p1a + sim_gamma_plot + geom_density(linetype="dotted",size=0.75))
+
+print(p1)
+```
+
+#### The model did a very decent job simulating realistic data based on the data provided. The one issue is that the high density around 200 on the original data plot skewed the simulated data to the left a bit. 
+
+
+
+
+
+
+
+
