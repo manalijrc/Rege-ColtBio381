@@ -1,0 +1,120 @@
+---
+title: "Homework 8"
+author: "Manali Rege-Colt"
+date: "4/1/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Creating a Fake Data Set
+I created this fake data set from an ongoing study in my lab focused on the effects of boat traffic noise on bottlenose dolphins. The study aimed to compare the effects of taxi boats versus tour (dolphin watching) boats. I hypothesized that the presence of dolphin watching tour boats would be more stressful for the dolphins than taxi boats because of their intent to be near dolphins. This stress would result in a greater number of peak frequency contour inflection points in their whistles. 
+
+```{r}
+# Library--------------------------------
+library(ggplot2)
+library(tidyr)
+
+# Making the data set using a normal distribution framework. 
+
+# Source: Perez-Ortega, Betzi, et al. "Dolphin-Watching Boats Affect Whistle Frequency Modulation in Bottlenose Dolphins." Frontiers in Marine Science 8 (2021): 102.
+
+# The data follows the idea that whistle modulation # increases as the number of tour boats present also increases
+
+# Tour boat dataset 
+tourBoat <- rnorm(n=242,mean=234.1,sd=232)
+head(tourBoat)
+
+# Taxi boat dataset 
+taxiBoat <- rnorm(n=242,mean=25.46,sd=27.1) 
+head(taxiBoat)
+
+dataFrame <- data.frame(taxiBoat,tourBoat)
+head(dataFrame)
+
+# organizing the inflection point data here into the
+# different variables - taxi or tour boat
+
+newDFrame <- gather(dataFrame,Type.of.Boat,PFC.Inflection.Points,taxiBoat:tourBoat)
+
+```
+
+## Analyzing Data
+
+Because this is an analysis of only 2 variables that are discrete treatments I chose to use an ANOVA analysis. 
+
+```{r}
+# Calculations---------------------------------------
+
+ANOVmodel <- aov(PFC.Inflection.Points~Type.of.Boat,data=newDFrame)
+print(ANOVmodel)
+print(summary(ANOVmodel))
+
+a <- summary(ANOVmodel)
+aggregate(PFC.Inflection.Points~Type.of.Boat,data=newDFrame,FUN=mean)
+
+unlist(a)
+unlist(a)[7]
+ANOVAsum <- list(fVal=unlist(a)[7],prF=unlist(a)[9])
+print(ANOVAsum)
+```
+
+## Graphing the Data
+
+```{r}
+# Plotting results-----------------------------------
+
+ANOVAplot <- ggplot(data=newDFrame, 
+                    aes(x=Type.of.Boat,
+                        y=PFC.Inflection.Points, 
+                        fill=Type.of.Boat)) + 
+  geom_boxplot()
+print(ANOVAplot)
+
+```
+
+## Homework Questions
+
+```{r}
+# Begin adjusting the means of the different groups. Given the sample sizes you have chosen, how small can the differences between the groups be (the “effect size”) for you to still detect a significant pattern (p < 0.05)?
+
+# Here is the code from the smallest difference in mean that I could get and still have significant results
+
+tourBoat <- rnorm(n=242,mean=31,sd=30)
+
+taxiBoat <- rnorm(n=242,mean=25.46,sd=27.1) 
+
+# print(summary(ANOVmodel))
+
+# > print(summary(ANOVmodel))
+#               Df Sum Sq Mean Sq F value
+# Type.of.Boat   1   3846    3846   4.642
+# Residuals    482 399356     829        
+#              Pr(>F)  
+# Type.of.Boat 0.0317 *
+# Residuals        
+
+# Alternatively, for the effect sizes you originally hypothesized, what is the minimum sample size you would need in order to detect a statistically significant effect?
+
+# Here is the smallest sample size that I could run and still get significant results
+tourBoat <- rnorm(n=10,mean=31,sd=30)
+
+# Taxi boat dataset 
+taxiBoat <- rnorm(n=10,mean=25.46,sd=27.1) 
+
+
+# > print(summary(ANOVmodel))
+#              Df Sum Sq Mean Sq F value
+# Type.of.Boat  1 163737  163737   5.202
+# Residuals    18 566597   31478        
+#              Pr(>F)  
+# Type.of.Boat  0.035 *
+# Residuals            
+# ---
+# Signif. codes:  
+#   0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’
+#   0.1 ‘ ’ 1
+```
+
