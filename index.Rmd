@@ -42,3 +42,6 @@ This my home base for BIOL 381, Computational Biology. All projects are posted b
 #### Week 7: [Homework 7](Homework_7.html)
 
 #### Week 8: [Homework 8](Homework_8.html)
+
+#### Week 9: [Homework 9](Homework_9.html)
+
