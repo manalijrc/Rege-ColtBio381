@@ -1,0 +1,122 @@
+---
+title: "Homework 9"
+author: "Manali Rege-Colt"
+date: "4/14/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Reorganizing Homework 8 using controlled structure: 
+```{r}
+# Library ----------------------------------
+library(ggplot2)
+library(tidyr)
+
+# Creating a Fake Data Set ----------------------------------
+# Original Hypothesis: The data follows the idea that whistle modulation # increases as the number of tour boats present also increases
+
+# Source: Perez-Ortega, Betzi, et al. "Dolphin-Watching Boats Affect Whistle Frequency Modulation in Bottlenose Dolphins." Frontiers in Marine Science 8 (2021): 102.
+
+# Global Variables
+taxiBoat <- rnorm(n=242,mean=25.46,sd=27.1)
+tourBoat <- rnorm(n=242,mean=234.1,sd=232)
+dataFrame <- data.frame(taxiBoat,tourBoat)
+head(dataFrame)
+
+newDFrame <- gather(dataFrame,Type.of.Boat,PFC.Inflection.Points,taxiBoat:tourBoat)
+
+# ----------------------------------------
+# FUNCTION: ANOVA_sum
+# description: a summary of of the ANOVA of the data 
+# inputs: boat type and PFC inflection point dataframe
+# outputs: ANOVA summary
+###########################################
+ANOVA_sum <- function(x=newDFrame) {
+ ANOVmodel <- aov(PFC.Inflection.Points~Type.of.Boat,data=newDFrame)
+ a <- summary(ANOVmodel)
+ aggregate(PFC.Inflection.Points~Type.of.Boat,data=newDFrame,FUN=mean)
+ unlist(a)
+ unlist(a)[7]
+ ANOVAsum <- list(fVal=unlist(a)[7],prF=unlist(a)[9])
+ ANOVAsum
+ 
+ return(ANOVAsum)
+} # end of ANOVA_sum
+#-------------------------------------------
+
+ANOVA_sum()
+
+# ----------------------------------------
+# FUNCTION: dataPlot
+# description: plots data from the boat type - inflection point dataframe
+# inputs: boat type - inflection point dataframe
+# outputs: box plot of inflection points per boat type
+###########################################
+dataPlot <- function(x=newDFrame) {
+  ANOVAplot <- ggplot(data=newDFrame, 
+                    aes(x=Type.of.Boat,
+                        y=PFC.Inflection.Points, 
+                        fill=Type.of.Boat)) + 
+  geom_boxplot()
+  return(print(ANOVAplot))
+} # end of dataPlot
+#-------------------------------------------
+
+dataPlot()
+```
+
+## Generating a linear regression of the data
+I thought it would be useful to generate a linear regression of the data to show that PFC inflection points increase with the presence of tour boats and their noise. The simplest way to do this was a linear regression. 
+```{r}
+boatPres <- rnorm(n=242,mean=3.3,sd=0.3)
+PFCpts <- rnorm(n=242,mean=234.1,sd=232)
+ID <- 1:242
+
+reg_dataFrame <- data.frame(ID,boatPres,PFCpts)
+head(reg_dataFrame)
+# ----------------------------------------
+# FUNCTION: linregSum
+# description: creates a summary of the linear regression analysis
+# inputs: boat presence and PFC inlfection point data, ID
+# outputs: summary of linear regression analysis
+###########################################
+linregSum <- function(x=boatPres, y=PFCpts) {
+  regModel <- lm(PFCpts~boatPres, data=reg_dataFrame)
+  summary(regModel)
+  l <- unlist(summary(regModel))
+  linregInfo <- list(intercept=l$coefficients1,
+                    slope=l$coefficients2,
+                    intercept_p=l$coefficients7,
+                    slope_p=l$coefficients8, r2=l$r.squared)
+  return(linregInfo)
+} # end of linregSum
+#-------------------------------------------
+
+linregSum()
+
+# ----------------------------------------
+# Linear Regression Plot
+# FUNCTION: linreg_plot
+# description: This function plots the data from the linear regression dataframe into a linear regression plot
+# inputs: dataframe of boat presence and inflection points
+# outputs: scatter plot with linear regression of PFC inflection points versus boat presence
+###########################################
+linreg_plot <- function(x=reg_dataFrame) {
+  reg_dataFrame <- reg_dataFrame <- data.frame(ID,boatPres,PFCpts)
+  reg_plot <- ggplot(reg_dataFrame) +
+    aes(x=boatPres,y=PFCpts) +
+    geom_point() +
+    stat_smooth(method=lm,se=0.99)
+
+
+
+return(print(reg_plot))
+
+} # end of linreg_plot
+#-------------------------------------------
+linreg_plot()
+```
+
