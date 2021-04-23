@@ -23,14 +23,14 @@ This my home base for BIOL 381, Computational Biology. All projects are posted b
 
 #### Homework Assignments
 
-#### Week 1: **Nothing Due**
+#### Week 1: **No Assignment**
 
 #### Week 2: [ Homework 2](Homework_2.html)
 
 #### Week 3: [ Homework 3](Homework-_3.html)
 
 #### Week 4: [Homework 4 - Typora](Homework_4.html)
-             
+
 [Homework 4 - Letter](Homework_4Letter.pdf) 
 
 [Homework 4 - Slides](Homework_4Slides.pdf)
@@ -41,7 +41,10 @@ This my home base for BIOL 381, Computational Biology. All projects are posted b
 
 #### Week 7: [Homework 7](Homework_7.html)
 
-#### Week 8: [Homework 8](Homework_8.html)
+#### Week 8: **No Assignment**
 
-#### Week 9: [Homework 9](Homework_9.html)
+#### Week 9: [Homework 8](Homework_8.html)
 
+#### Week 10:[Homework 9](Homework_9.html)
+
+#### Week 11: [Homework 10](Homework_10.html)

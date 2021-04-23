@@ -1,0 +1,269 @@
+---
+title: "Homework 10"
+author: "Manali Rege-Colt"
+date: "4/21/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## For Loops and Randomization Tests
+
+1. Use a for loop to write a function that calculates the number of zeros in a numeric vector. Before entering the loop, set up a counter variable counter <- 0. Inside the loop, add 1 to counter each time you have a zero in the matrix. Finally, use return(counter) for the output.
+
+```{r}
+# ----------------------------------------
+# FUNCTION zero_count
+# description: calculates the number of zeroes in a numeric vector
+# inputs: a vector of numerics
+# outputs: the number of zeroes in the vector
+###########################################
+zero_count <- function(x=my_vec) {
+  counter <- 0
+  for (i in seq_along(my_vec)) {
+    if(my_vec[i]==0) {
+      counter <- counter + 1
+    }
+  }
+ return(counter)
+  } # end of zero_count
+#-------------------------------------------
+my_vec <- c(rep(0,10),4,6,3,8,8,2)
+zero_count(my_vec)
+```
+
+
+2. Use subsetting instead of a loop to rewrite the function as a single line of code.
+
+```{r}
+subset_vec <- c(rep(0,10),6,3,8,8,2)
+subset_counter <- length(subset_vec[subset_vec==0])
+subset_counter
+
+```
+
+
+3. Write a function that takes as input two integers representing the number of rows and columns in a matrix.
+
+```{r}
+# ----------------------------------------
+# FUNCTION set_matrix
+# description: creates a matrix where each value is the product of the row number and column number
+# inputs: integer for the rows, integer for the columns
+# outputs: matrix with dimensions where each element is the product of the row and column integer numbers
+###########################################
+set_matrix <- function(r=5,c=5) {
+  my_matrix <- matrix(NA,nrow=r,ncol=c)
+  for (i in 1:nrow(my_matrix)) {
+    for (j in 1:ncol(my_matrix)) {
+      my_matrix[i,j] <- i*j
+    }
+  }
+  return(my_matrix)
+  }# end of set_matrix
+#-------------------------------------------
+
+set_matrix()
+
+
+```
+
+
+4. Use the code from the April 8th lecture (Randomization Tests) to design and conduct a randomization test for some of your own data. 
+
+```{r}
+# Preliminaries------------------------------
+library(ggplot2)
+library(TeachingDemos)
+library(tidyverse)
+
+set.seed(100)
+
+# create treatment groups
+trt_group <- c(rep("BoatAbsent",4),rep("BoatPresent",5))
+print(trt_group)
+
+# create response variable
+z <- c(runif(4) + 1, runif(5) + 10)
+print(z)
+
+# combine into data frame
+df <- data.frame(trt=trt_group,res=z)
+print(df)
+
+# look at means in observed data
+obs <- tapply(df$res,df$trt,mean)
+print(obs)
+
+# create a simulated data set
+
+# set up a new data frame
+df_sim <- df
+
+# randomize assignment of response to treatment groups
+df_sim$res <- sample(df_sim$res)
+print(df_sim)
+
+#look at means in simulated data
+sim <- tapply(df_sim$res,df$trt,mean)
+print(sim)
+
+# Build Functions ------------------------------
+
+####### ###########################################
+# function: readData
+# read in (or generate) data set for analysis
+# input: file name (or nothing, for this demo)
+# output: 3 column data frame of observed data (ID,x,y)
+#------------------------------------------------- 
+readData <- function(z=NULL) {
+                if(is.null(z)){
+                  boatPres <- 1:20
+                  freqMod <- boatPres + 10*rnorm(20)
+                  dF <- data.frame(ID=seq_along(boatPres), 
+                                   boatPres, 
+                                   freqMod)} # set up data frame                 
+#  dF <-read.table(file=z,row.names=1,header=TRUE,sep=",",stringsAsFactors=FALSE)
+# print(qplot(x=xObs,y=yObs)) # peek at input data
+return(dF)
+}# end of readData
+# --------------------------------------------------
+
+readData()
+
+# Calculate Metric ------------------------------
+
+##################################################
+# function: getMetric
+# calculate metric for randomization test
+# input: 2-column data frame for regression
+# output: regression slope
+#------------------------------------------------- 
+getMetric <- function(z=NULL) {
+                if(is.null(z)){
+                  boatPres <- 1:20
+                  freqMod <-  boatPres + 10*rnorm(20)
+                  z <- data.frame(ID=seq_along(boatPres), 
+                                  boatPres, 
+                                  freqMod)} # set up data frame                 
+
+. <- lm(z[,3]~z[,2])
+. <- summary(.)
+. <- .$coefficients[2,1]
+
+slope <- .
+
+return(slope)
+
+} # end of getMetric
+#--------------------------------------------
+getMetric()
+# Create Randomization ------------------------------
+
+##################################################
+# function: shuffleData
+# randomize data for regression analysis
+# input: 3-column data frame (ID,xVar,yVar)
+# output: 3-column data frame (ID,xVar,yVar)
+#------------------------------------------------- 
+shuffleData <- function(z=NULL) {
+                if(is.null(z)){
+                  boatPres <- 1:20
+                  freqMod <- boatPres + 3*rnorm(20)
+                  z <- data.frame(ID=seq_along(boatPres), 
+                                  boatPres,
+                                  freqMod)} 
+  z[,3] <- sample(z[,3]) 
+
+return(z)
+} # end of shuffleData 
+#-------------------------------------------
+shuffleData()
+
+# Calculate p value ------------------------------
+
+##################################################
+# function: getPVal
+# calculate p value from simulation
+# input: list of observed metric, and vector of simulated metrics
+# output: lower, upper tail probability values
+#------------------------------------------------- 
+getPVal <- function(z=NULL) {
+                    if(is.null(z)){
+                      z <- list(boatPres=runif(1), 
+                                xSim=runif(1000))}
+                      pLower <- mean(z[[2]]<=z[[1]])
+                      pUpper <- mean(z[[2]]>=z[[1]])
+return(c(pL=pLower,pU=pUpper))
+                    } # end of getPVal
+#------------------------------------------------
+getPVal()
+# Create Histogram ------------------------------
+
+##################################################
+# function: plotRanTest
+# create ggplot of histogram of simulated values
+# input: list of observed metric and vector of simulated metrics
+# output: saved ggplot graph
+#------------------------------------------------- 
+plotRanTest <- function(z=NULL) {
+                if(is.null(z)){
+                  z <- list(rnorm(1),rnorm(1000)) }
+dF <- data.frame(ID=seq_along(z[[2]]),simX=z[[2]])
+p1 <- ggplot(data=dF,mapping=aes(x=simX))
+p1 + geom_histogram(mapping=aes(fill=I("goldenrod"),color=I("black"))) +
+geom_vline(aes(xintercept=z[[1]],col="blue")) 
+
+} # end of plotRanTest
+#---------------------------------------------
+plotRanTest()
+
+# Functions Work------------------------------
+
+n_sim <- 1000 # number of simulated data sets
+x_sim <- rep(NA,n_sim) # set up empty vector for simulated slopes
+df <- readData() # get fake data
+x_obs <- getMetric(df) # get slope of observed data
+
+for (i in seq_len(n_sim)) {
+  x_sim[i] <- getMetric(shuffleData(df))
+}
+
+slopes <- list(x_obs,x_sim)
+getPVal(slopes)
+plotRanTest(slopes)
+
+
+```
+
+
+5. For comparison, calculate in R the standard statistical analysis you would use with these data. How does the p-value compare for the standard test versus the p value you estimated from your randomization test? If there are persistent differences in the p value of the standard test versus your randomization, what do you think is responsible for this difference?
+
+```{r}
+# Fake Data Set
+
+boatPres <- 1:20
+freqMod <- boatPres + 10*rnorm(20)
+z <- data.frame(ID=seq_along(boatPres),
+                boatPres,
+                freqMod)
+
+# Regression analysis 
+reg_model <- lm(freqMod~boatPres, data=z) 
+
+# summary 
+summary(reg_model)
+
+z <- unlist(summary(reg_model))
+
+reg_stats <- list(intercept=z$coefficients1,
+                  slope=z$coefficients2,
+                  intercept_p=z$coefficients7,
+                  slope_p=z$coefficients8, 
+                  r2=z$r.squared)
+print(reg_stats)
+```
+
+Running the linear regression resulted in a p-value of 0.0002 which is significant and the randomization test resulted in a p-value of 0.011 which is also significant. This makes sense because the research variables I used have shown significant results previously.  
