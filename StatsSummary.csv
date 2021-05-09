@@ -1,0 +1,8 @@
+# Summary stats for batch processing of regression models
+# timestamp: 2021-05-09 10:09:20
+# MJRC
+# ------------------------
+
+"ID","fileName","slope","pVal","r2"
+1,"AllSites.csv",0.00107384004916951,1.43744364710207e-112,0.0249925131927854
+2,"WhalesBoats.csv",-0.130012844605095,4.83644136984239e-75,0.0206655321063474
