@@ -1,0 +1,98 @@
+---
+title: "Homework 12"
+author: "Manali Rege-Colt"
+date: "5/9/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+# Preliminaries ----------------------------------
+library(ggplot2)
+library(ggthemes)
+library(patchwork)
+library(colorblindr)
+library(cowplot)
+library(colorspace)
+library(wesanderson)
+library(ggsci)
+library(TeachingDemos)
+library(remotes)
+
+d <- iris
+
+# Boxplot of petal length versus petal width per species
+
+my_cols <- c("darkolivegreen","seagreen4","palegreen2")
+p1 <- ggplot(data=d, 
+               mapping=aes(x=Petal.Width,y=Petal.Length,fill=Species)) + 
+    geom_boxplot() + 
+  labs(title= "Petal Length in Comparison to Petal Width in 3 Species", 
+       x="Petal Width", 
+       y="Petal Length")
+print(p1) 
+# adding custom colors
+p1 + scale_fill_manual(values=my_cols)
+# Making a black and white version
+p11 <- p1 + scale_fill_manual(values=c("red","blue","green"))
+p11_des <- colorblindr::edit_colors(p11,desaturate)
+plot(p11_des)
+
+# box plot of petal length per species with raw data poinst
+p2 <- ggplot(d,aes(x=Species,y=Petal.Length)) +
+               geom_boxplot(fill="palegreen3",outlier.shape=NA) + 
+
+  geom_point(position=position_jitter(width=0.1,height=0.7),color="lightslategrey",size=0.5)+
+  labs(title= "Petal Length of 3 Species", 
+       x="Species Name", 
+       y="Petal Length")
+
+print(p2)
+
+# Bar plot of petal length versus petal width to look at a general trend
+
+dTiny <- tapply(X=d$Petal.Length,INDEX=as.factor(d$Petal.Width),FUN=mean) #calculate means
+dTiny <- data.frame(Petal.Width=dTiny) # create single-column data frame
+dTiny <- cbind(Petal.Length=row.names(dTiny),dTiny) # 
+
+p3 <- ggplot(dTiny, aes(x=Petal.Width,y=Petal.Length,fill=Petal.Width)) +
+  geom_col()
+p3 + scale_fill_gradient(low="darkolivegreen", high="palegreen2")+
+  labs(title= "Petal Length in Comparison to Petal Width Across 3 Species", 
+       x="Petal Width", 
+       y="Petal Length")
+
+# black and white
+p3_des <- colorblindr::edit_colors(p3,desaturate)
+plot(p3_des)
+
+# scatter plot of petal length versus width per species
+
+p_scat <- ggplot(d,aes(x=Petal.Width,y=Petal.Length,col=as.factor(Species))) + geom_point(size=2)+
+  labs(title= "Petal Length in Comparison to Petal Width of 3 Species", 
+       x="Petal Width", 
+       y="Petal Length")
+
+p_scat + scale_color_manual(values=my_cols)
+
+# Bar plot of average petal length by species
+dTiny <- tapply(X=d$Petal.Length,INDEX=as.factor(d$Species),FUN=mean) #calculate means
+dTiny <- data.frame(Petal.Length=dTiny) # create single-column data frame
+dTiny <- cbind(Species=row.names(dTiny),dTiny) 
+
+p4 <- ggplot(dTiny, aes(x=Species,y=Petal.Length,fill=Species)) +
+  geom_col()+
+  labs(title= "Average Petal Length of 3 Species", 
+       x="Species", 
+       y="Petal Length")
+
+p4 + scale_fill_manual(values=my_cols)
+# comparing graphs
+
+p1 + scale_fill_manual(values=my_cols)+ p3 + scale_fill_gradient(low="darkolivegreen", high="palegreen2")+ p_scat+ scale_color_manual(values=my_cols) + plot_layout(ncol=1)
+
+p2 + p4 + scale_fill_manual(values=my_cols)
+``` 
